@@ -72,6 +72,7 @@ B = points_xt(60, beta, GDP(1), "", 1, [], 0);
 % A es la secuencia con una perturbacion
 A = points_xt(60, beta, GDP(1), "", 1, 1, 1);
 
+figure();
 plot(1:length(A), A, 1:length(B), B, 1:length(GDP), GDP);
 title('Comparacion de las sequencias')
 legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Cambio % GDP')
@@ -85,6 +86,7 @@ B = points_xt(60, beta, GDP(1), "", 1, [], 0);
 A = points_xt(60, beta, GDP(1), "", 1, 1, 1);
 A_v = points_xt(60, beta + 0.3, GDP(1), "", 1, 1, 1);
 
+figure();
 subplot(2, 1, 1)
 plot(1:length(A), A, 1:length(B), B, 1:length(GDP), GDP);
 title('Comparacion de las sequencias')
@@ -103,6 +105,7 @@ B = points_xt(60, beta, GDP(1), "", 1, [], 0);
 A = points_xt(60, beta, GDP(1), "", 1, 1, 1);
 A_v = points_xt(60, beta, GDP(1), "", 1, [1 5 10 16 28 31], 10);
 
+figure();
 subplot(2, 1, 1)
 plot(1:length(A), A, 1:length(B), B, 1:length(GDP), GDP);
 title('Comparacion de las sequencias')

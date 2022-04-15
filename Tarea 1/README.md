@@ -1,5 +1,11 @@
 # Tara 1 Teoría Macroeconómica 1
 
+## Datos del alumno
+
+| Nombre | Mail UC |
+| :-: | :-: |
+| {Francisco Fuentes} | {francisco.fuentes@uc.cl} |
+
 ## Consideraciones generales :thinking:
 
 * El desarrollo de mi tarea en ocasiones se escapa de las peticiones del enunciado con el proposito de investigar el alcance de mi programa. Es más en muchas ocasiones realicé ciertas funcionees o algoritmos antes de que me los pidieran puesto que facilitan el porceso de construcción de mi código. 
@@ -30,4 +36,5 @@ para ser lo más ordenado posible.
 * ```points_xt``` **P4**: Genera "n" puntos de la sucesión descrita en el enunciado, es necesario entregarle una semilla inicial "x0" y los parametros de ```xt1```. Además puedes agregar tantos shocks como sean requridos, para esto es necsario indicar con un vector que periodos se verán afectados "t_p" y el tamaño de la perturbación "p".
 * ```Sample``` **P1**: genera un vector columna que corresponde a una mustra aleatoria de tamaño "n" del vector "vector".
 * ```xt1``` **P4**: función que genera cada punto de la sucesión. Esto lo logra usando el punto anterior y el parametro phi. Sin embargo, es posible añadir incertidumbre al resultado si ingresas el string "N" en el parametro "eps_d" y que tanta dispersión es requerida en los shocks "sd".
- 
+
+
