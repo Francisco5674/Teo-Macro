@@ -2,8 +2,18 @@
 
 ## Consideraciones generales :thinking:
 
-* El desarrollo de mi tarea en ocasiones se escapa de las peticiones del enunciado con el proposito de investigar el alcance de mi programa. Es más en muchas ocasiones realicé ciertas funcionees o algoritmos antes de que
+* El desarrollo de mi tarea en ocasiones se escapa de las peticiones del enunciado con el proposito de investigar el alcance de mi programa. Es más en muchas ocasiones realicé ciertas funcionees o algoritmos antes de que me los pidieran puesto que facilitan el porceso de construcción de mi código. 
+Espero que disculpen mi osadía, pero creo firmemente que mejoran mi exprincia de aprendizaje. 
 
 ## Ejecución :computer:
+* Como fue solicitado, cada pregunta tiene un programa distinto, a decir verdad, planaba hacerlo de esa manera desde el principio, pero entiendo porque lo están pidiendo. Cada pregunta parte con los comandos ```clear``` y ```clc```
+para ser lo más ordenado posible.
 
 ## Funciones propias :books:
+* ```All_betas```**n**: Basicamente usa la función ```Betas``` para crear tantos estimadores como muestras de cada variable se dispongan.
+* ```Betas```: está función entregará una matriz tridimencional, donde cada fila es un "beta" distinto, incluyendo el coeficiente de posición. El primer elemento de las filas es el coeficiente de posición y el resto es el beta de cada variable dependiente con respecto al orden al que fueron ingresados 
+* ```Data_sample```: cumple la función requerida por random, sin embargo, está no grafica las distribuciones.
+* ```HP```: función pedida en el enunciado
+* ```MatrixA```: crea la matriz A del enunciado en base a las dimensiones y un lambda.
+* ```MatrixK```: crea la matriz K del enunciado en base a las dimensiones.
+* ```Sample```: genera un vector columna que corresponde a una mustra aleatoria de tamaño "n" del vector "vector".

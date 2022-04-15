@@ -10,3 +10,10 @@ Espero que disculpen mi osadía, pero creo firmemente que mejoran mi exprincia d
 para ser lo más ordenado posible.
 
 ## Funciones propias :books:
+* ```All_betas```**P1**: Basicamente usa la función ```Betas``` para crear tantos estimadores como muestras de cada variable se dispongan.
+* ```Betas```**P1**: está función entregará una matriz tridimencional, donde cada fila es un "beta" distinto, incluyendo el coeficiente de posición. El primer elemento de las filas es el coeficiente de posición y el resto es el beta de cada variable dependiente con respecto al orden al que fueron ingresados 
+* ```Data_sample```**P1**: cumple la función requerida por random, sin embargo, está no grafica las distribuciones.
+* ```HP```**P2**: función pedida en el enunciado
+* ```MatrixA```**P2**: crea la matriz A del enunciado en base a las dimensiones y un lambda.
+* ```MatrixK```**P2**: crea la matriz K del enunciado en base a las dimensiones.
+* ```Sample```**P1**: genera un vector columna que corresponde a una mustra aleatoria de tamaño "n" del vector "vector".
