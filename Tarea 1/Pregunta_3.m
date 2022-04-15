@@ -1,23 +1,56 @@
 %% Pregunta 3.1 Encontrar raices 
 
+clear;
+clc;
+
 % a) veamos las raices de las fuinciones
+
+% primero, verifiquemos que valor esta cerca de donde puede estar la raiz 
+
+x = linspace(-10, 10, 200);
+subplot(3, 1, 1)
+plot(x, f1(x));
+title("f1")
+subplot(3, 1, 2)
+plot(x, f2(x));
+title("f2")
+subplot(3, 1, 3)
+plot(x, f3(x));
+title("f3")
+
+% conluimos que el 2 es un  valor en el dominio razonable para usar
 xnr_1 = NR(@f1, @fprima1, 2);
 xnr_2 = NR(@f2, @fprima2, 2);
 xnr_3 = NR(@f3, @fprima3, 2);
 
-% b)
+% b) de lo que vimos anteriormente tenemos que entre -10 y 10 se encuentra
+% lo que buscamos
 xbs_1 = BS(@f1, -10, 10);
 xbs_2 = BS(@f2, -10, 10);
 xbs_3 = BS(@f3, -10, 10);
 
-% c) Ni idea
+% c) El algortimo de Newton Raphson parece requerir una cantidad menor de
+% iteraciones debido a que es capaz de acercarse más rápido a la raíz
+% buscada, sin embargo, este necesita de la primera aproximación lineal 
+% para funcionar, es decir, requiere cáluclo diferencial. Por otro lado,
+% el metodo de bisección es mucho más lento puesto que recorre distancias
+% siempre de la misma proporción, pero no neceesita de la primera
+% aproximación lineal para funcionar. En otras palabras, nos encontramos
+% frente a dos algortimos válidos, uno más rápido pero con requerimiento
+% de información adicional y otro que no requiere más que la función
+% original pero más lento. Dependiendo de las preferencias y del problema
+% qu estemos solucionando puede ser conveniente uno u otro. 
 
 % d) use funciones para hacer los ejercicios anteriores, y estas se basan
 % en algoritmos, en otras palabras, para que trabajar doble?
 
-
 %% Pregunta 3.2 Algo de fisica
 % a) consiguiendo los maximos
+
+% veamos la posición de la pelota con respcto al tiempo
+x = linspace(0, 1, 200);
+plot(x, H(x));
+title("H");
 
 hnr = NR(@Hprima, @Hprimaprima, 2);
 hbs = BS(@Hprima, 1, -1);
@@ -31,12 +64,16 @@ disp(H(hnr));
 disp(Hprima(hnr));
 % aprox no tiene velocidad en ese punto
 
+% d) Bueno, estimaba que este ejercicio sería una aplicación directa de los
+% algoritmos qu pidieron realizar en el inciso anterior, así que los
+% utilizé. En otras palabras, es claro que podemos usar las funciones
+% anteriores para resolver un problema de este tipo. 
 
 %% Primero las funciones 
 
 % movimiento de la pelota
 function h = H(t)
-h = 50 + 450*t - 0.5*981*t^2;
+h = 50 + 450*t - 0.5*981*t.^2;
 end
 
 function h = Hprima(t)
@@ -101,6 +138,6 @@ f = log(x) + log(3*x.^3);
 end
 
 function f = fprima3(x)
-f = 1/x + 3/x;
+f = x.^1 + 3*x.^-1;
 end
 

@@ -1,4 +1,7 @@
 %% Pregunta 2 Data del Banco
+clear;
+clc;
+
 DataBC = readtable('Data_BC.xlsx');
 DataBC(1,:) = [];
 
@@ -42,6 +45,17 @@ inf_y(1) = [];
 
 betas1 = (M1'*M1)\M1'*inf_y;
 betas2 = (M2'*M2)\M2'*inf_y;
+
+% Estas regresiones son series de tiempo que buscan predecir cambios
+% futuros en la inflación basados en la inflación de ciertos episodios
+% anteriores, sin embargo, también es posible añadir predictores
+% diferentes a su mismo valor en el pasado. En este caso, usamos dos
+% modelos, uno que utiliza el precio del cobre como predictor, y otro que
+% usa el precio del petroleo. En mi opinión esto permiete identificar que
+% parte de la inflación es explicada por un fenomeno interno, o dicho de
+% otra manera, que parte de la inflación es traducida en un cambio de
+% precios dentro del país y que parte del cambio es a causa de un cambio en
+% los precios de los commodities. 
 
 %% functions
 
