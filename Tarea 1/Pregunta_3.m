@@ -49,6 +49,7 @@ xbs_3 = BS(@f3, -10, 10);
 
 % veamos la posición de la pelota con respcto al tiempo
 x = linspace(0, 1, 200);
+figure();
 plot(x, H(x));
 title("H");
 
@@ -62,12 +63,7 @@ disp(H(hnr));
 
 % c)
 disp(Hprima(hnr));
-% aprox no tiene velocidad en ese punto
-
-% d) Bueno, estimaba que este ejercicio sería una aplicación directa de los
-% algoritmos qu pidieron realizar en el inciso anterior, así que los
-% utilizé. En otras palabras, es claro que podemos usar las funciones
-% anteriores para resolver un problema de este tipo. 
+% aprox no tiene velocidad en ese punto 
 
 %% Primero las funciones 
 
@@ -134,7 +130,7 @@ f = 5*x.^4 + 4*x.^3 + 3*x.^2 + 2*x + 1;
 end
 
 function f = f3(x)
-f = log(x) + log(3*x.^3);
+f = log(3*x.^4);
 end
 
 function f = fprima3(x)
