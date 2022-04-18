@@ -8,7 +8,7 @@
 
 ## Consideraciones generales :thinking:
 
-* El desarrollo de mi tarea en ocasiones se escapa de las peticiones del enunciado con el proposito de investigar el alcance de mi programa. Es más en muchas ocasiones realicé ciertas funcionees o algoritmos antes de que me los pidieran puesto que facilitan el porceso de construcción de mi código. 
+* El desarrollo de mi tarea en ocasiones se escapa de las peticiones del enunciado con el proposito de investigar el alcance de mi programa. Es más en muchas ocasiones realicé ciertas funciones o algoritmos antes de que me los pidieran puesto que facilitan el proceso de construcción de mi código. 
 Espero que disculpen mi osadía, pero creo firmemente que mejoran mi exprincia de aprendizaje. 
 
 ## Ejecución :computer:
