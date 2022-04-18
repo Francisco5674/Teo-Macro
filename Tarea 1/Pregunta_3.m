@@ -6,7 +6,7 @@ clc;
 % a) veamos las raices de las fuinciones
 
 % primero, verifiquemos que valor esta cerca de donde puede estar la raiz 
-
+%%
 x = linspace(-10, 10, 200);
 subplot(3, 1, 1)
 plot(x, f1(x));
@@ -17,17 +17,17 @@ title("f2")
 subplot(3, 1, 3)
 plot(x, f3(x));
 title("f3")
-
+%%
 % conluimos que el 2 es un  valor en el dominio razonable para usar
 xnr_1 = NR(@f1, @fprima1, 2);
 xnr_2 = NR(@f2, @fprima2, 2);
 xnr_3 = NR(@f3, @fprima3, 2);
 
 % b) de lo que vimos anteriormente tenemos que entre -10 y 10 se encuentra
-% lo que buscamos
+% lo que buscamos y para f3, entre 0.01 y 10.
 xbs_1 = BS(@f1, -10, 10);
 xbs_2 = BS(@f2, -10, 10);
-xbs_3 = BS(@f3, -10, 10);
+xbs_3 = BS(@f3, 0.01, 10);
 
 % c) El algortimo de Newton Raphson parece requerir una cantidad menor de
 % iteraciones debido a que es capaz de acercarse más rápido a la raíz
@@ -52,10 +52,10 @@ x = linspace(0, 1, 200);
 figure();
 plot(x, H(x));
 title("H");
-
+%%
 hnr = NR(@Hprima, @Hprimaprima, 2);
 hbs = BS(@Hprima, 1, -1);
-
+%%
 % b) 
 
 disp(H(hnr));
