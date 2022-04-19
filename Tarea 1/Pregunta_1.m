@@ -104,114 +104,52 @@ betas(:, :, 1)
 
 %% f) la matriz ya existe, se llama betas
 
-%% g) usaremos una funcion  e iteramos con el tamano de las muestras
+%% g) usaremos una funcion  e iteramos con el numero de muestras
 
-Data = [];
-i = 0;
-for s = [10^2 10^3 10^4 10^5]
-    i = i + 1;
-    Data(i, :, :) = All_betas(1000, s, X, Y); 
-end
+m = [10^2 10^3 10^4 10^5];
 
-%% graficamos
+for j = m
+
+Data = All_betas(j, 100, X, Y);
 
 n = 0;
-figure('Name', '100 muestras de Tamaño 100');
-for j = 1: (size(Data, 2) - 1)
+figure('Name', strcat(num2str(j),' muestras de tamaño 100'));
+for i = 1:size(Data, 1)
 n = n + 1;
-subplot(3, 2, n);
-histogram(Data(1, j + 1, :), 100);
-title(strcat("Beta ", num2str(j)));
-end
-
-%%
-n = 0;
-figure('Name', '100 muestras de Tamaño 1000');
-for j = 1: (size(Data, 2) - 1)
-n = n + 1;
-subplot(3, 2, n);
-histogram(Data(2, j + 1, :), 100);
-title(strcat("Beta ", num2str(j)));
-end
-
-%%
-n = 0;
-figure('Name', '100 muestras de Tamaño 10000');
-for j = 1: (size(Data, 2) - 1)
-n = n + 1;
-subplot(3, 2, n);
-histogram(Data(3, j + 1, :), 100);
-title(strcat("Beta ", num2str(j)));
-end
-
-%%
-n = 0;
-figure('Name', '100 muestras de Tamaño 100000');
-for j = 1: (size(Data, 2) - 1)
-n = n + 1;
-subplot(3, 2, n);
-histogram(Data(4, j + 1, :), 100);
-title(strcat("Beta ", num2str(j)));
-end
-
-%% h) iteramos nuevamente con la cantidad de muestras 
-
-Data_n = All_betas(100, 100, X, Y);
-
-n = 0;
-figure('Name', '100 muestras de tamaño 100');
-for i = 2:size(Data_n, 1)
-n = n + 1;
-subplot(3, 2, n);    
-histogram(Data_n(2, :, :), 100);
+subplot(4, 2, n);    
+histogram(Data(i, :, :), 100);
 title(strcat("Beta ", num2str(i - 1)));
 end
 
-%%
+end
 
-Data_n = All_betas(1000, 100, X, Y);
+%% g)
+% creamos un nuevo Y
+m = [10^2 10^3 10^4 10^5];
+
+for j = m
+
+SX = Data_sample(j, 100, X);
+SY = ones(100,1,j) + 2*SX(:,1,:) + 3*SX(:,2,:)... 
+    + 4*SX(:,3,:) + 5*SX(:,4,:) + 6*SX(:,5,:) +...
+    7*SX(:,6,:) + randn(100,1);
+aux = ones(100, 1, j);
+SX_est = [aux  SX];
+
+Data_n = Betas(SX_est, SY);    
 
 n = 0;
-figure('Name', '1000 muestras de tamaño 100');
-for i = 2:size(Data_n, 1)
+figure('Name', strcat(num2str(j),' muestras de tamaño 100'));
+for i = 1:size(Data_n, 1)
 n = n + 1;
-subplot(3, 2, n);    
-histogram(Data_n(2, :, :), 100);
+subplot(4, 2, n);    
+histogram(Data_n(i, :, :), 100);
 title(strcat("Beta ", num2str(i - 1)));
 end
 
-%%
-Data_n = All_betas(10000, 100, X, Y);
-
-n = 0;
-figure('Name', '10000 muestras de tamaño 100');
-for i = 2:size(Data_n, 1)
-n = n + 1;
-subplot(3, 2, n);    
-histogram(Data_n(2, :, :), 100);
-title(strcat("Beta ", num2str(i - 1)));
 end
-
-%%
-Data_n = All_betas(100000, 100, X, Y);
-
-n = 0;
-figure('Name', '100000 muestras de tamaño 100');
-for i = 2:size(Data_n, 1)
-n = n + 1;
-subplot(3, 2, n);    
-histogram(Data_n(2, :, :), 100);
-title(strcat("Beta ", num2str(i - 1)));
-end
-
-%% graficamos
-histogram(Data_n(1, 1, :));
 
 %% usefull functions
-
-%%
-test = Sample(10, X1);
-
 % usare matrices de tres dimensiones
 
 function Data = All_betas(n, s, X, Y)
