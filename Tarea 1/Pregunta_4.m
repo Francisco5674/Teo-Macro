@@ -44,7 +44,7 @@ plot(B6);
 title('phi = 0.95')
 
 %% c)
-GDP = readtable('GDP_growth.xlsx');
+GDP = readtable('GDP.xlsx');
 GDP = table2array(GDP);
 x = 1:length(GDP);
 
@@ -52,73 +52,73 @@ x = 1:length(GDP);
 [c, s] = HP(GDP', 10);
 figure();
 plot(x, s, x, c, x, s + c, "--")
-title("Cambio del PIB")
+title("PIB per capita LCU")
 legend("Tendencia", "Ciclo", "Serie original")
 
 %% e)
 % proceso AR1 en el PIB, como no existe un coeficiente de pos en un modelo
 % de esta naturaleza, no optare por incluirlo
-GDP_x = circshift(GDP, 1)';
-GDP_x(1) = [];
-GDP_y = GDP';
-GDP_y(1) = [];
+GDPC_x = circshift(c, 1);
+GDPC_x(1) = [];
+GDPC_y = c;
+GDPC_y(1) = [];
 % calculamos el regresor
-beta = (GDP_x'*GDP_x)\GDP_x'*GDP_y;
+beta = (GDPC_x'*GDPC_x)\GDPC_x'*GDPC_y;
 
 %% f)
 
 % B es la sequencia sin perturbacion
-B = points_xt(60, beta, GDP(1), "", 1, [], 0);
+B = points_xt(60, beta, c(1), "", 1, [], 0);
 % A es la secuencia con una perturbacion
-A = points_xt(60, beta, GDP(1), "", 1, 1, 1);
+A = points_xt(60, beta, c(1), "", 1, 1, 10^5);
 
 figure();
-plot(1:length(A), A, 1:length(B), B, 1:length(GDP), GDP);
+plot(1:length(A), A, 1:length(B), B, 1:length(c), c);
 title('Comparacion de las sequencias')
-legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Cambio % GDP')
+legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Ciclo GDP per cap')
 
 %% g)
 % opté por gráficar con una perturbacion y una mayor persistencia
 
 % B es la sequencia sin perturbacion
-B = points_xt(60, beta, GDP(1), "", 1, [], 0);
+B = points_xt(60, beta, c(1), "", 1, [], 0);
 % A es la secuencia con una perturbacion
-A = points_xt(60, beta, GDP(1), "", 1, 1, 1);
-A_v = points_xt(60, beta + 0.3, GDP(1), "", 1, 1, 1);
+A = points_xt(60, beta, c(1), "", 1, 1, 10^5);
+A_v = points_xt(60, beta + 0.3, c(1), "", 1, 1, 10^5);
 
 figure();
 subplot(2, 1, 1)
-plot(1:length(A), A, 1:length(B), B, 1:length(GDP), GDP);
+plot(1:length(A), A, 1:length(B), B, 1:length(c), c);
 title('Comparacion de las sequencias')
-legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Cambio % GDP')
+legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Ciclo GDP per cap')
 
 subplot(2, 1, 2)
-plot(1:length(A_v), A_v, 1:length(B), B, 1:length(GDP), GDP);
+plot(1:length(A_v), A_v, 1:length(B), B, 1:length(c), c);
 title('Comparacion de las sequencias distinta peersistencia')
-legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Cambio % GDP')
+legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Ciclo GDP per cap')
 
 %% h)
 
 % B es la sequencia sin perturbacion
-B = points_xt(60, beta, GDP(1), "", 1, [], 0);
+B = points_xt(60, beta, c(1), "", 1, [], 0);
 % A es la secuencia con una perturbacion
-A = points_xt(60, beta, GDP(1), "", 1, 1, 1);
-A_v = points_xt(60, beta, GDP(1), "", 1, [1 5 10 16 28 31], 10);
+A = points_xt(60, beta, c(1), "", 1, 1, 10^5);
+A_v = points_xt(60, beta, c(1), "", 1, [12 21 29 38 46 52], 2*10^5);
 
 figure();
 subplot(2, 1, 1)
-plot(1:length(A), A, 1:length(B), B, 1:length(GDP), GDP);
+plot(1:length(A), A, 1:length(B), B, 1:length(c), c);
 title('Comparacion de las sequencias')
-legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Cambio % GDP')
+legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Ciclo GDP per cap')
 % opté por gráficar con una perturbacion y con varias en distitnos
 % periodos. Notar que si escogemos adecuadamente el momento y la magnitud del shock 
 % en el tiempo en el que poner los shocks y su magnitud, la serie y la 
 % predicción se parecerían cada vez más.
 
 subplot(2, 1, 2)
-plot(1:length(A_v), A_v, 1:length(B), B, 1:length(GDP), GDP);
+plot(1:length(A_v), A_v, 1:length(B), B, 1:length(c), c);
 title('Comparacion de las sequencias distintas perturbaciones')
-legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Cambio % GDP')
+legend('Serie GDP perturbada', 'Serie GDP sin perturbar', 'Ciclo GDP per cap')
 
 %% Functions
 
