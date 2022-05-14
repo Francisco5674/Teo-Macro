@@ -1,4 +1,4 @@
-function [Copt, Vopt, Aopt] = V(A, r, w, T, b, sigma, h)
+function [Copt, Aopt] = Vl(A, r, w, T, b, phi, h)
 max_debt = find_max_debt(r, w, h);
 Vmatrix = zeros(length(A), T + 1);
 Assets_pos = zeros(length(A), T);
@@ -7,13 +7,16 @@ argmax = zeros(length(A), T);
 for t = T:-1:1
     A_sp = factible_grill(max_debt, t + 1, A);
     A_s = factible_grill(max_debt, t, A);
-    c = w(t) + (1 + r)* A_s' - A_sp;
+    c = (w(t) + (1 + r)* A_s' - A_sp)/(1+phi);
     c(c<=0) = 0;
+    l = (phi/w(t))*c;
+    l(l>1) = 1;
+    l(l<=0) = 0;
     
     finish_pos = (length(A) + 1 - length(A_sp));
     V_tp = Vmatrix(finish_pos:(length(A)),(t + 1))';
 
-    Value_f = util(c, sigma) + b * V_tp;
+    Value_f = log(c) + phi * log(l) + b * V_tp;
     [max_value, position] = max(Value_f,[],2);
     start_pos = (length(A) + 1 - length(A_s)):(length(A));
     Vmatrix(start_pos,t) = max_value; 
@@ -22,7 +25,6 @@ for t = T:-1:1
     argmax(i,t) = c(i, position(i));
     end
 end
-Vopt = Vmatrix;
 Assets_opt_pos = [];
 Assets_opt_pos(1) = sum(A<0) + 1;
 Copt = [argmax(Assets_opt_pos(1))];
