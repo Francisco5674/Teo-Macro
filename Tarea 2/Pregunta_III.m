@@ -29,7 +29,7 @@ re = BS(@(r) Auxdelta(r, w, T, b, sigma, A, delta, alpha, h, gi),...
 re_vector = [re_vector re];
 w = wage(re, T, alpha, delta);
 
-[~, Aopt] = V(A, re, w, T, b, sigma, h);
+[Copt, vopt, Aopt] = V(A, re, w, T, b, sigma, h);
 Aoptp = circshift(Aopt, -1);
 Copt = w + (1 + re)* Aopt - Aoptp; 
 Aset_matrix = [Aset_matrix Aopt'];
@@ -53,12 +53,12 @@ ylabel("re")
 
 %%
 
-function delta = Auxdelta(r, w, T, b, sigma, A, delta, alpha, h, g)
-delta = AuxA(r, w, T, b, sigma, A, h, g) - AuxK(r, T, delta, alpha, g);
+function dif = Auxdelta(r, w, T, b, sigma, A, delta, alpha, h, g)
+dif = AuxA(r, w, T, b, sigma, A, h, g) - AuxK(r, T, delta, alpha, g);
 end
 
 function Aux_A = AuxA(r, w, T, b, sigma, A, h, g)
-[~, Aopt] = V(A, r, w, T, b, sigma, h);
+[Copt, vopt, Aopt] = V(A, r, w, T, b, sigma, h);
 Aoptp = circshift(Aopt, -1);
 Aux_A = dot(Aoptp,mt(g, T));
 end

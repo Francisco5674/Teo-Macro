@@ -11,6 +11,8 @@ h = 111111110;
 wf = @(t) 1.5 + 5*10^(-2)*t - 10^(-3)*t.^2;
 w = wf(1:T);
 plot(1:T, w);
+title("Wage")
+xlabel("Time")
 
 % creating my asets grill
 A = linspace(-15,25, 1001);
@@ -56,6 +58,7 @@ legend("w1", "w2", "w3");
 
 [Copt, Vopt, Aopt] = V(A, r, w3, T, b, sigma, h);
 
+%%
 figure("Name","consuption")
 Aoptp = circshift(Aopt, -1);
 Copt = w3 + (1 + r)* Aopt - Aoptp; 
@@ -63,7 +66,7 @@ plot(1:T, Aopt, 1:T, Copt, 1:T, w3)
 xlabel("T")
 legend("Assets", "consuption", "Wage")
 title("r = (1-b)/b, sigma = 2")
-
+%%
 figure("Name","Diferent r and sigma")
 
 subplot(1,2,1);
@@ -79,11 +82,11 @@ title("r = 0.05, sigma = 2")
 
 subplot(1,2,2);
 sigma1 = 8;
-[Copt, Vopt, Aopt] = V(A, r, w3, T, b, sigma1, h);
+[Copt, Vopt, Aopt] = V(A, r1, w3, T, b, sigma1, h);
 
 Aoptp = circshift(Aopt, -1);
-Copt = w3 + (1 + r)* Aopt - Aoptp; 
+Copt = w3 + (1 + r1)* Aopt - Aoptp; 
 plot(1:T, Aopt, 1:T, Copt, 1:T, w3)
 xlabel("T")
 legend("Assets", "consuption", "Wage")
-title("r = (1-b)/b, sigma = 8")
+title("r = 0.05, sigma = 8")

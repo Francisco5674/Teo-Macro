@@ -30,7 +30,7 @@ L = Laboral_suply(T);
 
 for r_iter = r_vector 
 w = wage(r_iter, T, alpha, delta);
-[~, Aopt] = V(A, r_iter, w, T, b, sigma, h);
+[Copt, Vopt, Aopt] = V(A, r_iter, w, T, b, sigma, h);
 
 Assets_suply(iteration) = sum(Aopt(2:end))/T;
 Capital_demand(iteration) = fisher(r_iter, delta, alpha, L);
@@ -62,10 +62,10 @@ re = BS(@(r) Auxdelta(r, w, T, b, sigma, A, delta, alpha, h), 0.01, 0.20);
 w = wage(re, T, alpha, delta);
 
 %%
-[Vopt, Aopt] = V(A, re, w, T, b, sigma, h);
+[Copt, Vopt, Aopt] = V(A, re, w, T, b, sigma, h);
 
 Aoptp = circshift(Aopt, -1);
-Copt = w - phi*Copt.^-1 + (1 + re)* Aopt - Aoptp; 
+Copt1 = w + (1 + re)* Aopt - Aoptp; 
 plot(1:T, Aopt, 1:T, Copt, 1:T, w)
 xlabel("T")
 legend("Assets", "consuption", "Wage")
@@ -83,7 +83,7 @@ re = BS(@(r) Auxdelta(r, w, T, b, sigma, A, delta, alpha, hi), 0.01, 0.20);
 re_vector = [re_vector re];
 w = wage(re, T, alpha, delta);
 
-[~, Aopt] = V(A, re, w, T, b, sigma, hi);
+[Copt, Vopt, Aopt] = V(A, re, w, T, b, sigma, hi);
 Aoptp = circshift(Aopt, -1);
 Copt = w + (1 + re)* Aopt - Aoptp; 
 Cons_matrix = [Cons_matrix Copt'];
@@ -126,12 +126,12 @@ hold off
 
 %% Auxiliar functions
 
-function delta = Auxdelta(r, w, T, b, sigma, A, delta, alpha, h)
-delta = AuxA(r, w, T, b, sigma, A, h) - AuxK(r, T, delta, alpha);
+function dif = Auxdelta(r, w, T, b, sigma, A, delta, alpha, h)
+dif = AuxA(r, w, T, b, sigma, A, h) - AuxK(r, T, delta, alpha);
 end
 
 function Aux_A = AuxA(r, w, T, b, sigma, A, h)
-[~, Aopt] = V(A, r, w, T, b, sigma, h);
+[Copt, Vopt, Aopt] = V(A, r, w, T, b, sigma, h);
 Aux_A = sum(Aopt(2:end))/T;
 end
 
