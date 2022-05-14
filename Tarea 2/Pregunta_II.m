@@ -58,7 +58,7 @@ legend("Demand", "Suply")
 
 %% i)
 
-re = BS(@(r) Auxdelta(r, w, T, b, sigma, A, delta, alpha, h), 0.01, 0.20);
+re = BS(@(r) Auxdelta(r, T, b, sigma, A, delta, alpha, h), 0.01, 0.20);
 w = wage(re, T, alpha, delta);
 
 %%
@@ -79,7 +79,7 @@ Wage_matrix = [];
 re_vector = [];
 
 for hi = hvector
-re = BS(@(r) Auxdelta(r, w, T, b, sigma, A, delta, alpha, hi), 0.01, 0.20);
+re = BS(@(r) Auxdelta(r, T, b, sigma, A, delta, alpha, hi), 0.01, 0.20);
 re_vector = [re_vector re];
 w = wage(re, T, alpha, delta);
 
@@ -126,11 +126,12 @@ hold off
 
 %% Auxiliar functions
 
-function dif = Auxdelta(r, w, T, b, sigma, A, delta, alpha, h)
-dif = AuxA(r, w, T, b, sigma, A, h) - AuxK(r, T, delta, alpha);
+function dif = Auxdelta(r, T, b, sigma, A, delta, alpha, h)
+dif = AuxA(r, T, b, sigma, A, alpha, delta, h) - AuxK(r, T, delta, alpha);
 end
 
-function Aux_A = AuxA(r, w, T, b, sigma, A, h)
+function Aux_A = AuxA(r, T, b, sigma, A, alpha, delta, h)
+w = wage(r, T, alpha, delta);
 [Copt, Vopt, Aopt] = V(A, r, w, T, b, sigma, h);
 Aux_A = sum(Aopt(2:end))/T;
 end

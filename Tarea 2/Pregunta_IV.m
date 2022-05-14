@@ -10,6 +10,7 @@ alpha = 1/3;
 r = (1 - b)/b;
 h = 10000000000;
 phi = 1.2;
+g = 0;
 
 % wage vector
 wf = @(r) (1 - alpha)*(alpha/(r + delta))^(alpha/(1 -alpha));
@@ -19,30 +20,79 @@ w = wage(r, T, alpha, delta);
 A = linspace(-15,25, 1001);
 
 %%
-[Copt, Aopt] = Vl(A,r,w,T,b,phi,h);
+hvector = linspace(0, 9, 6);
+
+Cons_matrix = [];
+Aset_matrix = [];
+nopt_matrix = [];
+re_vector = [];
+
+for hi = hvector
+
+re = BS(@(r) Auxdelta(r, T, b, A, delta, alpha, phi, g, hi),...
+    0, 0.2);
+re_vector = [re_vector re];
+we = wage(r, T, alpha, delta);
+
+[~, Aopt] = Vl(A,re,we,T,b,phi,hi);
+
+Aoptp = circshift(Aopt, -1);
+Copt = (we + (1 + re)* Aopt - Aoptp)/(1+phi);
+nopt = 1 - phi*(we.^-1).*Copt;
+
+Cons_matrix = [Cons_matrix Copt'];
+Aset_matrix = [Aset_matrix Aopt'];
+nopt_matrix = [nopt_matrix nopt'];
+end
+%%
+hold on
+for i = 1:length(hvector)
+txt = strcat("interest rate = ", num2str(re_vector(i)), ...
+    " and h =", num2str(hvector(i)));
+plot(1:T, Cons_matrix(:, i), "DisplayName",txt)
+title("Consuption")
+legend show
+end
+hold off
 
 %%
-plot(1:T, Aopt, 1:T, Copt, 1:T, w)
-xlabel("T")
-legend("Assets", "consuption", "Wage")
+hold on
+for i = 1:length(hvector)
+txt = strcat("interest rate = ", num2str(re_vector(i)), ...
+    " and h =", num2str(hvector(i)));
+plot(1:T, Aset_matrix(:, i), "DisplayName",txt)
+title("Assets")
+legend show
+end
+hold off
 
 %%
-nopt = 1 - phi*(w.^-1).*Copt;
-plot(1:T,nopt);
+hold on
+for i = 1:length(hvector)
+txt = strcat("interest rate = ", num2str(re_vector(i)), ...
+    " and h =", num2str(hvector(i)));
+plot(1:T, nopt_matrix(:, i), "DisplayName",txt)
+title("Working time")
+legend show
+end
+hold off
 
 %% Auxiliar functions
 
-function delta = Auxdelta(r, w, T, b, sigma, A, delta, alpha, h)
-delta = AuxA(r, w, T, b, sigma, A, h) - AuxK(r, T, delta, alpha);
+function dif = Auxdelta(r, T, b, A, delta, alpha, phi, g, h)
+
+w = wage(r, T, alpha, delta);
+[Copt, Aopt] = Vl(A,r,w,T,b,phi,h);
+nopt = 1 - phi*(w.^-1).*Copt;
+Aoptp = circshift(Aopt, -1);
+Aux_A = dot(Aoptp,mt(g, T));
+
+dif = Aux_A...
+    - AuxK(r, T, delta, alpha, nopt, g);
 end
 
-function Aux_A = AuxA(r, w, T, b, sigma, A, h)
-[~, Aopt] = V(A, r, w, T, b, sigma, h);
-Aux_A = sum(Aopt(2:end))/T;
-end
-
-function Aux_K = AuxK(r, T, delta, alpha)
-L = Laboral_suply(T);
+function Aux_K = AuxK(r, T, delta, alpha, n, g)
+L = dot(n,mt(g, T));
 Aux_K = fisher(r, delta, alpha, L);
 end
 

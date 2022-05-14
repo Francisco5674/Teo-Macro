@@ -24,7 +24,7 @@ Aset_matrix = [];
 re_vector = [];
 
 for gi = gvector
-re = BS(@(r) Auxdelta(r, w, T, b, sigma, A, delta, alpha, h, gi),...
+re = BS(@(r) Auxdelta(r, T, b, sigma, A, delta, alpha, h, gi),...
     0.01, 0.20);
 re_vector = [re_vector re];
 w = wage(re, T, alpha, delta);
@@ -53,11 +53,13 @@ ylabel("re")
 
 %%
 
-function dif = Auxdelta(r, w, T, b, sigma, A, delta, alpha, h, g)
-dif = AuxA(r, w, T, b, sigma, A, h, g) - AuxK(r, T, delta, alpha, g);
+function dif = Auxdelta(r, T, b, sigma, A, delta, alpha, h, g)
+dif = AuxA(r, T, b, sigma, A, alpha, delta, h, g)...
+    - AuxK(r, T, delta, alpha, g);
 end
 
-function Aux_A = AuxA(r, w, T, b, sigma, A, h, g)
+function Aux_A = AuxA(r, T, b, sigma, A, alpha, delta, h, g)
+w = wage(r, T, alpha, delta);
 [Copt, vopt, Aopt] = V(A, r, w, T, b, sigma, h);
 Aoptp = circshift(Aopt, -1);
 Aux_A = dot(Aoptp,mt(g, T));
