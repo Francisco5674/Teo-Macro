@@ -77,6 +77,18 @@ legend show
 end
 hold off
 
+%% Consuption/income correlation
+ci_corr = [];
+for i = 1:length(hvector)
+    ci_corr = [ci_corr corrp(Cons_matrix(:, i), we.*nopt_matrix(:,i)')];
+end
+
+plot(hvector, ci_corr);
+title("Restriction effects in consuption income correlation")
+xlabel("the bigger the number the less restricted")
+ylabel("Cons Income Correlation")
+
+
 %% Auxiliar functions
 
 function dif = Auxdelta(r, T, b, A, delta, alpha, phi, g, h)

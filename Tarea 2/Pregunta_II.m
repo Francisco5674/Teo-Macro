@@ -66,7 +66,7 @@ w = wage(re, T, alpha, delta);
 
 Aoptp = circshift(Aopt, -1);
 Copt1 = w + (1 + re)* Aopt - Aoptp; 
-plot(1:T, Aopt, 1:T, Copt, 1:T, w)
+plot(1:T, Aopt, 1:T, Copt1, 1:T, w)
 xlabel("T")
 legend("Assets", "consuption", "Wage")
 
@@ -123,6 +123,17 @@ title("Wage")
 legend show
 end
 hold off
+
+%%
+ci_corr = [];
+for i = 1:length(hvector)
+    ci_corr = [ci_corr corrp(Cons_matrix(:, i), Wage_matrix(:, i))];
+end
+
+plot(hvector, ci_corr);
+title("Restriction effects in consuption income correlation")
+xlabel("the bigger the number the less restricted")
+ylabel("Cons Income Correlation")
 
 %% Auxiliar functions
 
