@@ -32,7 +32,7 @@ for hi = hvector
 re = BS(@(r) Auxdelta(r, T, b, A, delta, alpha, phi, g, hi),...
     0, 0.2);
 re_vector = [re_vector re];
-we = wage(r, T, alpha, delta);
+we = wage(re, T, alpha, delta);
 
 [~, Aopt] = Vl(A,re,we,T,b,phi,hi);
 
