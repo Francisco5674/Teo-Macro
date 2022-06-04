@@ -1,4 +1,4 @@
-function [Copt, Vopt, Aopt] = V(A, r, w, T, b, sigma, h)
+function [Vopt, Aopt] = V(A, r, w, T, b, sigma, h)
 max_debt = find_max_debt(r, w, h);
 Vmatrix = zeros(length(A), T + 1);
 Assets_pos = zeros(length(A), T);
@@ -25,10 +25,8 @@ end
 Vopt = Vmatrix;
 Assets_opt_pos = [];
 Assets_opt_pos(1) = sum(A<0) + 1;
-Copt = [argmax(Assets_opt_pos(1))];
 for t = 2:T
 Assets_opt_pos(t) = Assets_pos(Assets_opt_pos(t - 1), t - 1);
-Copt = [Copt argmax(Assets_opt_pos(2))];
 end
 Aopt = A(Assets_opt_pos);
 end

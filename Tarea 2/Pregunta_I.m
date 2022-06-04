@@ -21,10 +21,10 @@ A = linspace(-15,25, 1001);
 % c) so, we have a r interest rate 
 r = (1 - b)/b;
 
-[Copt, Vopt, Aopt] = V(A, r, w, T, b, sigma, h);
+[Vopt, Aopt] = V(A, r, w, T, b, sigma, h);
 
 Aoptp = circshift(Aopt, -1);
-Copt1 = w + (1 + r)* Aopt - Aoptp; 
+Copt = w + (1 + r)* Aopt - Aoptp; 
 plot(1:T, Aopt, 1:T, Copt, 1:T, w)
 xlabel("T")
 legend("Assets", "consuption", "Wage")
