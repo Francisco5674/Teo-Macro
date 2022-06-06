@@ -160,6 +160,25 @@ f_summary(Assets_means, "Assets")
 figure(7)
 f_summary(Consuption_means, "Consuption")
 
-%% g)
+%% g) now, i cant uderstand the function that you gave us, so i can answer 
+% what is the effect in welfare, but ill do it my way 
+sigmamu = 0.1;
+[pro,tr]= discAR(states, rho, sigmamu);
+[Cti,Ati,S,Vf,Ap] = value(beta,sigma,r,w,A,tol,pro,tr);
+[panel_S_aux,~,e_bar] = distest(N,T,tr,pro);
+[Assets, Consuption1] = simulate(Ap,Cti, panel_S_aux, A);
 
+sigmamu = 0.15;
+[pro,tr]= discAR(states, rho, sigmamu);
+[Cti,Ati,S,Vf,Ap] = value(beta,sigma,r,w,A,tol,pro,tr);
+[panel_S_aux,~,e_bar] = distest(N,T,tr,pro);
+[Assets, Consuption2] = simulate(Ap,Cti, panel_S_aux, A);
+
+[change, H2, H1] = gfunction(Consuption1, Consuption2, sigma, beta);
+%% So, the efect is clear, aprox 83% of the people are worse with more 
+% uncerteinty
+figure(8)
+hist((H2 - H1), 100)
+[t,s] = title('Change in welfare','sigma = 0.1 -> sigma = 0.15');
+prctile(H2 - H1, 83)
 

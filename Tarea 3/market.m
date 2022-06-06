@@ -1,4 +1,4 @@
-function [suply, demand, consuption_mean, production] =...
+function [suply, demand, consuption_mean, Assets_mean, production] =...
     market(r, N, T, alpha, states, rho, sigmamu, beta, sigma, A, tol, delta)
 
 w = (1 - alpha)*(alpha/(delta + r))^(alpha/(1 - alpha));
@@ -10,7 +10,7 @@ w = (1 - alpha)*(alpha/(delta + r))^(alpha/(1 - alpha));
 
 L = mean(pro(panel_S_aux(:, end)));
 Assets_mean = mean(Assets, 2);
-suply = mean(Assets_mean);
+suply = mean(Assets_mean(1001:end));
 demand = L*(alpha/(delta + r))^(1/(1-alpha));
 K = demand;
 consuption_mean = mean(Consuption, 2);

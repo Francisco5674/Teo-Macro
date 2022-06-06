@@ -9,7 +9,7 @@ w = (1 - alpha)*(alpha/(delta + r))^(alpha/(1 - alpha));
 
 L = mean(pro(panel_S_aux(:, end)));
 Assets_mean = mean(Assets, 2);
-suply = mean(Assets_mean);
+suply = mean(Assets_mean(1001:end));
 demand = L*(alpha/(delta + r))^(1/(1-alpha));
 
 dif = suply - demand;

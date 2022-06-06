@@ -33,7 +33,10 @@ for r_i = r_list
     suply_points = [suply_points suply];
 end
 %%
+figure(1)
 plot(r_list, suply_points, r_list, demand_points)
+xlabel('Assets')
+ylabel('Interest rate')
 
 %% b) lets find the equlibrim interest rate
 
@@ -42,12 +45,12 @@ r_e = BS(@(R) delta_market(R, N, T, alpha, ...
 
 %% c) effects of sigma
 
-sigmamu_list = linspace(0.1, 1.19, 10);
+sigmamu_list = linspace(0.1, 0.19, 10);
 rlist = [];
 iteration = 1;
 for sigma_i = sigmamu_list
     r_e = BS(@(R) delta_market(R, N, T, alpha, ...
-    states, rho, sigma_i, beta, sigma, A, tol, delta), 0.00001, 0.1);
+    states, rho, sigma_i, beta, sigma, A, tol, delta), 0.0001, 0.04);
     rlist = [rlist r_e];
     disp('*************************************************')
     disp(strcat('iteration ->', num2str(iteration), " ready"))
@@ -55,6 +58,36 @@ for sigma_i = sigmamu_list
     iteration = iteration + 1;
 end
 
-%%
+%% lets see how the uncertainty is affecting the interest rate 
+figure(2)
+plot(sigmamu_list, rlist)
+title('Uncertainty effects in equilibrium')
+ylabel('Interest Rate in equilibrium')
+xlabel('Sigma')
 
 %%
+Assets_means = [];
+Consuption_means = [];
+Production = [];
+
+for i = 1:length(rlist)
+    [suply, demand, consuption_mean, Assets_mean, production] = ...
+    market(rlist(i), N, T, alpha, states, rho, sigmamu_list(i),...
+    beta, sigma, A, tol, delta);
+
+    Assets_means = [Assets_means Assets_mean];
+    Consuption_means = [Consuption_means consuption_mean];
+    Production = [Production production];
+
+end
+
+%%
+figure(3)
+e_summary(Consuption_means, "Consumption")
+figure(4)
+e_summary(Assets_means, "Assets")
+figure(5)
+plot(sigmamu_list, Production)
+xlabel('Sigma')
+ylabel('Production')
+title('Production/Sigma')
