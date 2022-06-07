@@ -14,6 +14,6 @@ while desc > 0.000001
 end
 disp(strcat("finished in i=", num2str(i)))
 
-change = (H2./H1);
+change = (H2./H1).^(1/(1-sigma)) - 1;
 end
 

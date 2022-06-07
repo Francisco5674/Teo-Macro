@@ -160,25 +160,43 @@ f_summary(Assets_means, "Assets")
 figure(7)
 f_summary(Consuption_means, "Consuption")
 
-%% g) now, i cant uderstand the function that you gave us, so i can answer 
-% what is the effect in welfare, but ill do it my way 
+%% g) now, time to understand the efects on welfare
 sigmamu = 0.1;
 [pro,tr]= discAR(states, rho, sigmamu);
-[Cti,Ati,S,Vf,Ap] = value(beta,sigma,r,w,A,tol,pro,tr);
+[Cti,Ati,S,Vf1,Ap] = value(beta,sigma,r,w,A,tol,pro,tr);
 [panel_S_aux,~,e_bar] = distest(N,T,tr,pro);
 [Assets, Consuption1] = simulate(Ap,Cti, panel_S_aux, A);
 
 sigmamu = 0.15;
 [pro,tr]= discAR(states, rho, sigmamu);
-[Cti,Ati,S,Vf,Ap] = value(beta,sigma,r,w,A,tol,pro,tr);
+[Cti,Ati,S,Vf2,Ap] = value(beta,sigma,r,w,A,tol,pro,tr);
 [panel_S_aux,~,e_bar] = distest(N,T,tr,pro);
 [Assets, Consuption2] = simulate(Ap,Cti, panel_S_aux, A);
 
-[change, H2, H1] = gfunction(Consuption1, Consuption2, sigma, beta);
-%% So, the efect is clear, aprox 83% of the people are worse with more 
-% uncerteinty
+[change, H2, H1] = gfunction(Consuption1(:,1001:end)...
+    , Consuption2(:,1001:end), sigma, beta);
+%% 
 figure(8)
-hist((H2 - H1), 100)
-[t,s] = title('Change in welfare','sigma = 0.1 -> sigma = 0.15');
-prctile(H2 - H1, 83)
+subplot(2,2,1)
+histogram((H2 - H1)/(sqrt(var(H2 - H1))), 100)
+[t,s] = title('Effective change in welfare (Normalized difference)',...
+    'sigma = 0.1 -> sigma = 0.15');
+subplot(2,2,2)
+histogram(change, 100)
+[t,s] = title('Effective change in welfare (Function g(a,e))',...
+    'sigma = 0.1 -> sigma = 0.15');
+subplot(2,2,3)
+hold on
+[t,s] = title('Effective Value function',...
+    'sigma = 0.1 (Orange) -> sigma = 0.15 (Blue)');
+h2 = histogram(H2, 100, 'Normalization', 'probability');
+h1 = histogram(H1, 100, 'Normalization', 'probability');
+hold off
+subplot(2,2,4)
+Vdif = (Vf2./Vf1).^(1/(1-sigma)) - 1;
+plot(A, Vdif(:,:))
+title('Expected change in welfare (Function g(a,e))')
+legend('shock 1','','','','shock 5'); 
+
+%%
 
