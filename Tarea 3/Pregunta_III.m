@@ -77,10 +77,10 @@ Consuption_99 = prctile(Consuption_mean, 99);
 
 figure(2)
 subplot(1,2,1)
-hist(Consuption_mean,100)
+histogram(Consuption_mean,100)
 title("Consuption mean")
 subplot(1,2,2)
-hist(Assets_mean, 100)
+histogram(Assets_mean, 100)
 title("Assets mean")
 
 %% b) effects in welfare
@@ -88,25 +88,44 @@ tau = 0.04;
 [pro,tr]= discAR(states, rho, sigmamu);
 [panel_S_aux,~,e_bar] = distest(N,T,tr,pro);
 L = mean(pro(panel_S_aux(:, end)));
-[Cti,Ati,Vf,Ap] = valueg(beta,sigma,r,w,A,tol,pro,tr,L,tau);
+[Cti,Ati,Vf1,Ap] = valueg(beta,sigma,r,w,A,tol,pro,tr,L,tau);
 [Assets, Consuption1] = simulate(Ap, Cti, panel_S_aux, A);
 
 tau = 0.12;
 [pro,tr]= discAR(states, rho, sigmamu);
 [panel_S_aux,~,e_bar] = distest(N,T,tr,pro);
 L = mean(pro(panel_S_aux(:, end)));
-[Cti,Ati,Vf,Ap] = valueg(beta,sigma,r,w,A,tol,pro,tr,L,tau);
+[Cti,Ati,Vf2,Ap] = valueg(beta,sigma,r,w,A,tol,pro,tr,L,tau);
 [Assets, Consuption2] = simulate(Ap, Cti, panel_S_aux, A);
 
 %%
 [change, H2, H1] = gfunction(Consuption1(:,1001:end)...
     , Consuption2(:,1001:end), sigma, beta);
 figure(3)
-hist((H2 - H1), 100)
-[t,s] = title('Change in welfare','tau = 0.12 -> tau = 0.04');
-[Hm, Hstd, Hp10, Hp50, Hp90, Hp99] = ownsummary(H2 - H1, 1);
+subplot(2,2,1)
+histogram((H2 - H1)/(sqrt(var(H2 - H1))), 100)
+[t,s] = title('Effective change in welfare (Normalized difference)',...
+    'tau = 0.04 -> tau = 0.12');
+subplot(2,2,2)
+histogram(change, 100)
+[t,s] = title('Effective change in welfare (Function g(a,e))',...
+    'tau = 0.04 -> tau = 0.12');
+subplot(2,2,3)
+hold on
+[t,s] = title('Effective Value function',...
+    'tau = 0.04 (Orange) -> tau = 0.12 (Blue)');
+h2 = histogram(H2, 100, 'Normalization', 'probability');
+h1 = histogram(H1, 100, 'Normalization', 'probability');
+hold off
+subplot(2,2,4)
+Vdif = (Vf2./Vf1).^(1/(1-sigma)) - 1;
+plot(A, Vdif(:,:))
+title('Expected change in welfare (Function g(a,e))')
+legend('shock 1','','','','shock 5'); 
+%% c) looking for equlibrium
+tau = 0.075;
+r_e = BS(@(R) delta_marketg(R, N, T, alpha, ...
+    states, rho, sigmamu, beta, sigma, A, tol, delta, tau), 0.001, 0.05);
 
-%%
-hist(change, 100)
 
 
