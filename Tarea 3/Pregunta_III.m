@@ -127,5 +127,45 @@ tau = 0.075;
 r_e = BS(@(R) delta_marketg(R, N, T, alpha, ...
     states, rho, sigmamu, beta, sigma, A, tol, delta, tau), 0.001, 0.05);
 
+%% d) now, time to iterate
+tau_list = linspace(0, 0.12, 10);
+re_list = []; 
+iteration = 1;
+for tau_i = tau_list
+    r_e = BS(@(R) delta_marketg(R, N, T, alpha, ...
+    states, rho, sigmamu, beta, sigma, A, tol, delta, tau_i), 0.001, 0.05);
+    re_list = [re_list r_e];
+    disp('*************************************************')
+    disp(strcat('iteration ->', num2str(iteration), " ready"))
+    disp('*************************************************')
+    iteration = iteration + 1;
+end
+%%
+
+Assets_means = [];
+Consuption_means = [];
+Production = [];
+
+for i = 1:length(re_list)
+    [suply, demand, consuption_mean, Assets_mean, production] = ...
+    marketg(re_list(i), N, T, alpha, states, rho, sigmamu,...
+    beta, sigma, A, tol, delta, tau_list(i));
+
+    Assets_means = [Assets_means Assets_mean];
+    Consuption_means = [Consuption_means consuption_mean];
+    Production = [Production production];
+
+end
+
+%%
+figure(4)
+n_summary(Consuption_means, "Consumption")
+figure(5)
+n_summary(Assets_means, "Assets")
+figure(6)
+plot(tau_list, Production)
+xlabel('Sigma')
+ylabel('Production')
+title('Production/Tau')
 
 
