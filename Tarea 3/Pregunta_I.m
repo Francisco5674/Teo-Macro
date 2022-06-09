@@ -1,4 +1,5 @@
 %% In this part im going to understang how to work with stocastic effetcs 
+tic
 clear;
 clc;
 % parameters first
@@ -199,4 +200,5 @@ title('Expected change in welfare (Function g(a,e))')
 legend('shock 1','','','','shock 5'); 
 
 %%
+toc
 

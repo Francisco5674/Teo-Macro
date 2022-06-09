@@ -1,4 +1,5 @@
 %% Now it is time to find the general equilibrium with goverment
+tic 
 clear;
 clc;
 % setting paramters
@@ -167,5 +168,6 @@ plot(tau_list, Production)
 xlabel('Sigma')
 ylabel('Production')
 title('Production/Tau')
+toc
 
 

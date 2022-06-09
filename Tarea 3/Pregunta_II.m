@@ -1,4 +1,5 @@
 %% Now it is time to find the general equilibrium 
+tic
 clear;
 clc;
 % setting paramters
@@ -91,3 +92,4 @@ plot(sigmamu_list, Production)
 xlabel('Sigma')
 ylabel('Production')
 title('Production/Sigma')
+toc
