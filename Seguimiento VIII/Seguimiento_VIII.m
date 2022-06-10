@@ -1,11 +1,10 @@
 clear variables; close all; clc
-
+%% b)
 % Parameters
 beta= 0.96; sigma= 2;
 % marginal utility
 up= @(c) c.^(-sigma);
-T = 300;
-
+T = 300000;
 
 % transition Matrix
 Pi= [.6 .15 .15 .1 ;
@@ -39,30 +38,48 @@ pe= C0./up(yg);
 
 % risky premiun
 riskfree = up(yg)./( beta*Pi*up(yg) )  - 1;  
-Rp = Pi*(pe + yg)./pe - riskfree;
+Rp = Pi*(pe + yg)./pe - (1 + riskfree);
+Returns = Pi*(pe + yg)./pe - 1;
 
 
-%% now we can use the covariance 
-sim = distest(1, T, Pi, yg);
-
-DF = [];
-RT = [];
-
-for i = 1:(size(sim,2) - 1)
-    producto_t1 = yg(sim(i + 1));
-    precio_t1 = pe(sim(i + 1));
-    precio_t0 = pe(sim(i));
-    producto_t0 = yg(sim(i));
-    discount_factor = beta*up(producto_t1)/up(producto_t0);
-    ret = (precio_t1 + producto_t1)/producto_t0;
-    DF = [DF discount_factor];
-    RT = [RT ret];
+%% c) now we can use the covariance 
+Piac = cumsum(Pi, 2);
+random_v = rand(1, T);
+Ytime = zeros(1,T); Ytime(1) = 2;
+for i = 2:T+1
+    % base state
+    pos0 = Ytime(i - 1);
+    % future state
+    pos1 = 1;
+    while (random_v(i - 1) > Piac(pos0, pos1))
+        pos1 = pos1 + 1;
+    end
+    Ytime(i) = pos1;
 end
+pos = Ytime;
 
-%%
-cv = cov(DF',RT');
-cv = -cv(1,2);
-r = cv*riskfree;
+%% I did it but just with 300 periods, because its exactly the same 
+% situation, and as you can see, both ways of calculating the risk premiun 
+% are identical 
+EspRpt = []; % calculating the risk premiun with Expected Value
+CovRpt = []; % calculating the riks premiun with covariance
+for i = 1:300
+    s = pos(i);
+    m = M(s,1:4);
+    prob = Pi(s,1:4);
+    mesp = dot(prob,m);
+    pt0 = p(s);
+    Resp = dot(prob, p + yg)/pt0;
+    Rf = 1/dot(prob,m);
+    EspRp = Resp - Rf;
 
+    EspRpt = [EspRpt EspRp];
 
+    Erm = dot(prob,((p + yg)'.*m));
+    Erm = Erm/pt0;
+    cv = Erm - Resp*mesp;
+    CovRp = -Rf*(cv);
+
+    CovRpt = [CovRpt CovRp];
+end
 
