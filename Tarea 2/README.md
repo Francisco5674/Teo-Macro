@@ -1,4 +1,4 @@
-# Tara 1 Teoría Macroeconómica 1
+# Tara 2 Teoría Macroeconómica 1
 
 ## Datos del alumno
 
