@@ -1,4 +1,4 @@
-# Tara 3 Teoría Macroeconómica 1
+# Tarea 3 Teoría Macroeconómica 1
 
 ## Datos del alumno
 
