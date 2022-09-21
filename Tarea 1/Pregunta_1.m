@@ -70,7 +70,7 @@ SX = Data_sample(1000, 100, X);
 % muestras de Y
 SY = Data_sample(1000, 100, Y);
 
-size(SY)
+size(SX)
 
 
 %% d) Procedemos con estudio estadístico de cada elemento de SX, lo que 
@@ -184,7 +184,7 @@ end
 end
 
 
-% saca mvectores que corresponden a muestras de n elementos
+% saca vectores que corresponden a muestras de n elementos
 function Samp = Sample(n, vector)
 Samp = [];
 for i = 1:n
