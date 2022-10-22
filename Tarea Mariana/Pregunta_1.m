@@ -15,11 +15,26 @@ LDU(:,:,3)
 %% c)
 tol = 10^-6;
 b = [17, 28, 19, 10]';
-Sol1 = MatrixSolve(A, b, tol);
+[Sol1, E1, ev1] = MatrixSolve(A, b, tol);
 
 %% d) 
 Sol2 = LoopSolve(A, b, tol);
 
+%% e)
+
+Eabs1 = E1 + Sol1;
+
+subplot(2,2,1)
+plot(ev1)
+title('Num Error')
+subplot(2,2,2)
+plot(1:15,E1(1,:),1:15,E1(2,:),1:15,E1(3,:),1:15,E1(4,:))
+legend('x1','x2','x3','x4')
+title('Error')
+subplot(2,2,3)
+plot(1:15,Eabs1(1,:),1:15,Eabs1(2,:),1:15,Eabs1(3,:),1:15,Eabs1(4,:))
+legend('x1','x2','x3','x4')
+title('Abs Error')
 %% functions
 function Res = X_to_A(A1)
 Res = [-7, 1, 1, 2; 0, 4, 2, -1; 3, 0, -6, 2; -2, -3, 3, 8]; 
@@ -35,11 +50,16 @@ LDU(:,:,2) = D;
 LDU(:,:,3) = U;
 end
 
-function Sol = MatrixSolve(A, b, tol)
+function [Sol, E, ev] = MatrixSolve(A, b, tol)
 LDU = desmat(A);
 L = LDU(:,:,1);
 D = LDU(:,:,2);
 U = LDU(:,:,3);
+
+% empty vector to save errors
+E = [];
+ev = [];
+
 
 x0 = zeros(size(A,1),1);
 disp(x0);
@@ -48,6 +68,8 @@ e = abs(norm(x1) - norm(x0));
 while e > tol
     x2 = (L + D)\(b - U*x1);
     e = abs(norm(x1) - norm(x2));
+    E = [E, x1 - x2];
+    ev = [ev, e];
     x1 = x2;
 end
 Sol = x2;
